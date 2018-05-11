@@ -7,10 +7,10 @@ public class Example3 {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Hello from Example3: " + Thread.currentThread());
 
-        Thread thread = new Thread(new Runnable() {
+        Runnable task = new Runnable() {
             @Override
             public void run() {
-                System.out.println("Hello from ? " + Thread.currentThread());
+                System.out.println("Hello from ? " + Thread.currentThread() + " id " + Thread.currentThread().getId());
                 int counter = 0;
                 while (true) {
                     counter = printCurrentCounter(counter);
@@ -27,9 +27,14 @@ public class Example3 {
                 }
                 return counter;
             }
-        });
-        thread.setName("Counter");
-        thread.start();
+        };
+
+        Thread counter1 = new Thread(task, "Counter-1");
+        counter1.start();
+
+        Thread counter2 = new Thread(task, "Counter-2");
+        counter2.start();
+
 
         TimeUnit.SECONDS.sleep(10);
 
