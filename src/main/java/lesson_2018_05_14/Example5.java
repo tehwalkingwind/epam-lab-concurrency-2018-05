@@ -2,8 +2,22 @@ package lesson_2018_05_14;
 
 public class Example5 {
 
+    // shared state
+    // visibility problem
     private static volatile long value = 0;
     private static final Object LOCK = new Object();
+
+    // monitor
+    // mark word                 <- 1 машинное слово
+    // 01 |  hashCode | age | 0  <- unlocked
+    // 00 | mark_pointer         <- locked
+    // 01 |  .  . .         | 1
+    // 10
+    // 11                        <- помечен для сборки
+
+
+    // class pointer             <- 2 машинное слово
+    // array length              <- 3 машинное слово
 
     public static void main(String[] args) throws InterruptedException {
         Runnable counter = new Runnable() {
@@ -11,12 +25,15 @@ public class Example5 {
             @Override
             public void run() {
                 for (long i = 0; i < 1_000_000L; ++i) {
-                    synchronized (LOCK) {
+                    // Критическая секция
+                        // гонка потоков
+                        // race condition
+                        // read-modify-store
+
                         ++value;
                         // LOAD
                         // INC
                         // STORE
-                    }
                 }
             }
         };
